@@ -7671,10 +7671,10 @@ DLG 3
 DLG 4
 """
 {
-  - {item "4"} < 5 ?
+  - muni < 5 ?
     {wvy}*searching*{wvy}
     
-    you found 5 muni{item "4" {{item "4"} + 5}}
+    you found 5 muni{muni = muni + 5}}
   - else ?
     {wvy}*searching*{wvy}
     
@@ -7684,17 +7684,16 @@ DLG 4
 NAME a13_drawer_l_1 dialog
 
 DLG 5
-you found muni
+you found muni{muni = muni + 1}
 NAME muni dialog
 
 DLG 6
 """
-you picked up an empty bottle{hasEmptyBottle1 = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1}
-{
-  - hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 >= 4 ?
-    {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
-  - else ?
-    {tempString = ""}
+you picked up an empty bottle{hasEmptyBottle1 = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
+	- tempInt >= 5 ?
+	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	- else ?
+	  {tempString = ""}
 }(p){say tempString}
 
 """
@@ -7702,9 +7701,8 @@ NAME Empty Bottle dialog
 
 DLG 7
 """
-you put on your {droop}blue hat{droop}{hasBlueHat = 1}
-{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1}{
-  - hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 >= 4 ?
+you put on your blue hat{hasBlueHat = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
+  - tempInt >= 5 ?
     {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
   - else ?
     {tempString = ""}
@@ -7712,8 +7710,20 @@ you put on your {droop}blue hat{droop}{hasBlueHat = 1}
 """
 NAME hat_blue dialog
 
+DLG 1n
+"""
+you picked up your phone(p){wvy}...incoming message...{wvy}(p)noone: your mission today is to collect water(p)your neighbor in A3 died suddenly last night(p)the city hasn't turned off their water yet(p)we need you to collect their water before it's shut off(p)you may keep any valuables you find(p))once you collect the water, you will receive further instructions{hasPhone = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
+	- tempInt >= 5 ?
+	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	- else ?
+	  {tempString = ""}
+}(p){say tempString}
+"""
+NAME a13 your phone dialog
+
 DLG 8
 """
+INSERT this'll have something about it's too early to go to bed
 Greeting text{choice
 	- Response one
 	  answer to response one
@@ -7721,6 +7731,7 @@ Greeting text{choice
 	  answer to response two
     }
 """
+NAME bed_choice dialog
 
 DLG 9
 
@@ -7740,9 +7751,12 @@ NAME exit narration 12
 
 DLG 13
 """
-*burp* hey, buddy(p)do you have a couple of munies to spare?(p)they said I can't go in there when I'm drunk(p)dialogchoice give him muni? yes you gave him 1 muni no if has cannabis give him cannabis? yes you gave him 1 cannabis no 2choices fuck off fack off
-
-aSec_drunk
+*burp* hey, buddy(p)do you have a couple of munies to spare?(p)my partner said I can't go in there when I'm drunk{choice
+	- "sure, here's some muni"
+	  you gave them 2 muni{muni = muni - 2}(p)you now have {say muni} munies
+	- "no"
+	  would you like to give them something else?
+}{aSec_drunk = aSec_drunk + 1}
 """
 NAME man sitting drinking dialog
 
@@ -8254,7 +8268,7 @@ DLG r
   - canLeaveFirstRoom >= 1 ?
     {property locked false}to the secondary A hall
   - else ?
-    you must get dressed, grab your backpack and an empty bottle before you leave.  (p)also, do you have any muni?
+    you must get dressed, grab your phone, backpack, and an empty bottle before you leave.  (p)also, do you have any muni?
 }
 """
 NAME exit narration 1
@@ -8327,24 +8341,22 @@ NAME a13 chest 1 r dialog
 
 DLG 1f
 """
-you picked up your backpack{hasBackpack = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1}
-{
-  - hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 >= 4 ?
-    {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
-  - else ?
-    {tempString = ""}
+you picked up your backpack{hasBackpack = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
+	- tempInt >= 5 ?
+	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	- else ?
+	  {tempString = ""}
 }(p){say tempString}
 """
 NAME backpack dialog
 
 DLG 1g
 """
-you put on your sweatshirt{hasSweatshirt = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1}
-{
-  - hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 >= 4 ?
-    {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
-  - else ?
-    {tempString = ""}
+you put on your sweatshirt{hasSweatshirt = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
+	- tempInt >= 5 ?
+	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	- else ?
+	  {tempString = ""}
 }(p){say tempString}
 """
 NAME sweatshirt dialog
@@ -8396,10 +8408,6 @@ NAME guy smoking dialog
 DLG 1m
 marow
 NAME z main cat3 dialog
-
-DLG 1n
-you picked up your phone(p){wvy}...incoming message...{wvy}(p)INSERT message about getting water in A3
-NAME a13 your phone dialog
 
 DLG 1o
 """

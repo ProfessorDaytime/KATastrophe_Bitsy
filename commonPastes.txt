@@ -1,0 +1,15 @@
+"""
+
+"""
+
+{wvy}*searching*{wvy}
+
+{muni = muni + 1}
+
+Greeting text{choice
+	- Response one
+	  answer to response one
+	- Response two
+	  answer to response two
+}
+
