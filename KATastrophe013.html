@@ -249,6 +249,9 @@ ROOM 4
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 NAME test_room1
+ITM 1e 8,5
+EXT 5,3 4 12,8 DLG 6o
+EXT 12,8 4 5,3
 PAL 0
 
 ROOM 5
@@ -3742,7 +3745,7 @@ SPR A
 00111100
 00100100
 00100000
-POS 3 10,6
+POS 4 5,8
 
 SPR a
 00000000
@@ -9112,6 +9115,19 @@ INSERT cabinet dialog
 z12_cabinet_2
 """
 NAME z12 tv stand r dialog
+
+DLG 6o
+"""
+{
+  - {item "1"} >= 1 ?
+    {property locked false}
+    The key opens the door!
+  - else ?
+    {property locked true}
+    The door is locked...
+}
+"""
+NAME locked exit 25
 
 VAR hasBlueHat
 0

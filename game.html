@@ -7690,7 +7690,7 @@ DLG 6
 """
 you picked up an empty bottle{hasEmptyBottle1 = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
 	- tempInt >= 5 ?
-	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	  {canLeaveFirstRoom = 1}{tempString = "'i think i'm ready to go to A3'"}
 	- else ?
 	  {tempString = ""}
 }(p){say tempString}
@@ -7702,7 +7702,7 @@ DLG 7
 """
 you put on your blue hat{hasBlueHat = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
   - tempInt >= 5 ?
-    {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+    {canLeaveFirstRoom = 1}{tempString = "'i think i'm ready to go to A3'"}
   - else ?
     {tempString = ""}
 }(p){say tempString}
@@ -7711,9 +7711,9 @@ NAME hat_blue dialog
 
 DLG 1n
 """
-you picked up your phone(p){wvy}...incoming message...{wvy}(p)noone: your mission today is to collect water(p)your neighbor in A3 died suddenly last night(p)the city hasn't turned off their water yet(p)we need you to collect their water before it's shut off(p)you may keep any valuables you find(p)once you collect the water, you will receive further instructions{hasPhone = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
+you picked up your phone(p){wvy}...incoming message...{wvy}(p)noone: "your mission today is to collect water(p)your neighbor in A3 died suddenly last night(p)the city hasn't turned off their water yet(p)we need you to collect their water before it's shut off(p)you may keep any valuables you find(p)once you collect the water, you will receive further instructions. go to A3 now"{hasPhone = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
 	- tempInt >= 5 ?
-	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	  {canLeaveFirstRoom = 1}{tempString = "'i think i'm ready to go to A3'"}
 	- else ?
 	  {tempString = ""}
 }(p){say tempString}
@@ -7985,7 +7985,7 @@ you found can
 NAME can dialog
 
 DLG 27
-this rat is dead(p)some of its blood got on you(p)'yuck'
+this rat is dead(p)some of its blood got on you(p)'yuck'{rats = rats + 1}
 NAME item 22 dialog
 
 DLG 28
@@ -8527,7 +8527,7 @@ NAME rat dialog
 
 DLG 620
 """
-you picked up a rat(p)it bit you(p)you are bleeding(p)you shove the rat into your backpack with the rest{rats = rats + 1}(p)you have {say rats} rats
+you picked up a rat(p)it bit you(p)you are bleeding(p){health = health - 2}(p)you lost 2 health(p)you have {say health} health points left(p)you shove the rat into your backpack with the rest{rats = rats + 1}(p)you have {say rats} rats
 """
 NAME rat bite dialog
 
@@ -8603,8 +8603,121 @@ DLG a
 NAME robot dialog
 
 DLG b
-oh no! i lost my pet rat. it means the world to me.(p)could you please help me find it?  i'll owe you big time.(p)i'm sure i could make it up to you some how.
+"""
+{aSec_ratPerson = aSec_ratPerson + 1}{
+	- returnedRats >= 1 ?
+	  rat owner: "thank you again for finding my rat"
+	- else ?
+	  (jump 654)
+}
+"""
 NAME excitedperson dialog
+
+DLG 654
+"""
+{
+	- aSec_ratPerson >= 2 ?
+	  (jump 655)
+	- else ?
+	  neighbor: "oh no! i lost my pet rat(p)it means the {rbw}world{rbw} to me(p)could you please help me find it?(p)i'll owe you big time(p)i'm sure i could make it up to you some how"
+}
+"""
+NAME
+
+DLG 655
+"""
+{
+	- rats >= 15 ?
+	  rat owner: "i'm sure one of those rats is mine(p)thank you so much"{rats = 0}(p)you now have {say rats} rats in your backpack(p)you actually dumped everything out in their house(p)you were bit by a rat{health = health - 2}(p)you have {say health} health points left(p)it took you about 5 minutes to get everything else back in(p)you were bit by another rat{health = health - 2}(p)you have {say health} health points left
+	- else ?
+	  (jump 656)
+}
+"""
+NAME check 15 rats
+
+DLG 656
+"""
+{
+	- rats >= 1 ?
+      rat owner: "i don't think any of those are my rat"(jump 657)
+	- else ?
+	  (jump 657)
+}
+"""
+NAME check if those rats are the rat
+
+DLG 657
+"""
+{
+    - shotRatConvo >= 1 ?
+      rat owner: "i still can't believe you shot a rat in my apartment"
+	- else ?
+	  (jump 658)
+}
+"""
+NAME shot rat convo happen
+
+DLG 658
+"""
+{
+	- shotRat >= 1 ?
+	  (jump 659)
+	- else ?
+	  (jump 660)
+}
+"""
+NAME shot rat check
+
+DLG 659
+"""
+rat owner: "what the fuck was that?(p)did you shoot a gun in there?"{choice
+	- yes
+	  "yeah, a giant rat lunged at me(p)i had to protect myself"(p)rat owner: "oh, i saw that rat(p)that's not my rat"{shotRatConvo = 1}
+	- no
+	  "oh, i uh sneezed"(p)rat owner: "please find my rat(p)and when you do, don't get it sick"{shotRatConvo = 1}
+}
+"""
+NAME tell about shot rat
+
+DLG 660
+"""
+{
+    - gotBitConvo >= 1 ?
+      rat owner: "hey, if it means anything to you(p)i'm sorry you got bit by that rat"
+	- else ?
+      (jump 661)
+}
+"""
+NAME check got bit convo
+
+DLG 661
+"""
+{
+	- gotBit >= 1 ?
+	  "there's a huge fuckin rat in your apartment(p)it bit me(p)look at me, i'm bleeding(p)is that your rat?"{gotBitConvo = 1}(jump 663)
+	- else ?
+	  {gotBitConvo = 1}(jump 662)
+}
+"""
+NAME check got bit
+
+DLG 662
+"""
+{
+	- a8_sawBigRat >= 1 ?
+	  "i saw a huge rat in your apartment(p)isn't that your rat?"(jump 663)
+	- else ?
+	  rat owner: "have you found my rat?"(p)"no"
+
+}
+"""
+NAME check saw big rat
+
+DLG 663
+"""
+rat owner: "no, i saw that rat(p)that's not my rat"
+"""
+NAME not my rat
 
 DLG c
 """
@@ -8618,10 +8731,9 @@ NAME portable_game_console dialog
 
 DLG e
 """
-{a3_box_1 = a3_box_1 + 1}
-{wvy}*searching*{wvy}(p){
+{a3_box_1 = a3_box_1 + 1}{wvy}*searching*{wvy}(p){
 	- a3_box_1 < 2 ?
-	  (jump 631)
+	  you found 1 muni(p){muni = muni + 1}you have {say muni} munies
 	- else ?
 	  you found nothing else of interest
 }
@@ -8631,7 +8743,6 @@ NAME a3 box 1 dialog
 DLG f
 """
 {wvy}...searching...{wvy}(p)you found {rbw}nothing{rbw}
-a3_box_2
 """
 NAME a3 box 2 dialog
 
@@ -8665,10 +8776,10 @@ DLG i
 """
 {a3_box_5 = a3_box_5 + 1}
 {wvy}*searching*{wvy}(p){
-	- a3_box_5 <= 5 ?
-	  (jump 631)
-	- else ?
+	- a3_box_5 >= 6 ?
 	  you found nothing else of interest
+	- else ?
+	  you found 1 muni(p){muni = muni + 1}you have {say muni} munies
 }
 """
 NAME a3 box 5 dialog
@@ -8776,7 +8887,7 @@ NAME deposit a3 water
 
 DLG 635
 """
-your neighbor in Z12 is out of town(p)we need you to break into their apartment to collect more water(p)you'll need a passcode to get in the door(p)we don't know it, but we do know who does(p)the junkies in A11 have been sighted breaking into Z12(p)2 weeks ago(p)and our records show no indication(p)that they have changed the passcode since(p)good luck!
+your neighbor in Z12 is out of town(p)we need you to break into their apartment to collect more water(p)you'll need a passcode to get in the door(p)we don't know it, but we do know who does(p)the junkies in A11 have been sighted breaking into Z12(p)2 weeks ago(p)and our records show no indication(p)that they have changed the passcode since(p)good luck finding those junkies from A11!
 """
 NAME noone about junkies having passcode
 
@@ -8786,7 +8897,7 @@ DLG 623
 	- z12_waterCollected >= 1 ?
 	  (jump 624)
 	- else ?
-	  'i don't have any water to deposit'
+	  'i don't have any water to deposit(p)i think i should go get the passcode to Z12(p)from those junkies in A11'
 }
 """
 NAME check z12 water collected
@@ -8878,7 +8989,7 @@ DLG 1f
 """
 you picked up your backpack{hasBackpack = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
 	- tempInt >= 5 ?
-	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	  {canLeaveFirstRoom = 1}{tempString = "'i think i'm ready to go to A3'"}
 	- else ?
 	  {tempString = ""}
 }(p){say tempString}
@@ -8889,7 +9000,7 @@ DLG 1g
 """
 you put on your sweatshirt{hasSweatshirt = 1}{tempInt = hasBlueHat + hasSweatshirt + hasBackpack + hasEmptyBottle1 + hasPhone}{
 	- tempInt >= 5 ?
-	  {canLeaveFirstRoom = 1}{tempString = "you're ready to go"}
+	  {canLeaveFirstRoom = 1}{tempString = "'i think i'm ready to go to A3'"}
 	- else ?
 	  {tempString = ""}
 }(p){say tempString}
@@ -8940,11 +9051,36 @@ NAME a13_sink dialog
 
 DLG 1l
 """
-hey, i'm trying to make this curry dish, but i'm out of turmeric.  you wouldn't happen to have any to spare, would you?
-
-zMain_smoker
+{
+	- gaveTurmeric >= 1 ?
+	  smoker: "thank you so much for the turmeric"
+	- else ?
+	  smoker: "hey, i'm trying to make this curry dish(p)but i'm out of turmeric(p)you wouldn't happen to have any to spare, would you? (jump 664)
+}
 """
 NAME guy smoking dialog
+
+DLG 664
+"""
+{
+	- turmeric >= 1 ?
+      (jump 665)
+	- else ?
+	  "no, sorry, i don't have any"(p)smoker: "nah proobz, ma dood"
+}
+"""
+NAME check for turmeric
+
+DLG 665
+"""
+give the smoker turmeric?{choice
+	- yes
+	  smoker: "oh, wow, you have made my week!(p)thank you so much!"{turmeric = turmeric - 1}(p)you now have {say turmeric} turmeric shakers{gaveTurmeric = 1}
+	- no
+	  "i'm not sure what tameric is"
+}
+"""
+NAME give turmeric option
 
 DLG 1m
 marow
@@ -8972,7 +9108,7 @@ NAME a8 box 3 dialog
 
 DLG 646
 """
-META- so this "universe" i've been developing this "universe" outside of this game(p)the country you're in is "Vespucca"(p)because Amerigo Vespucci(p)'what if it were named for his last name?'(p)so this room is a joke about the person(p)overfeeding their rat to make rat foie gras(p)France is named after a weapon the Franks used(p)"Francisca" it was a throwing axe thing(p)they also used a javelin called "Angon" i think(p)so i'm calling France "Angon"
+META- so this "universe" i've been developing exists outside of this game(p)the country you're in is "Vespucca"(p)because Amerigo Vespucci(p)'what if it were named for his last name?'(p)so this room is a joke about the person(p)overfeeding their rat to make rat foie gras(p)France is named after a weapon the Franks used(p)"Francisca" it was a throwing axe thing(p)they also used a javelin called "Angon" i think(p)so i'm calling France "Angon"
 """
 NAME
 
@@ -9033,7 +9169,7 @@ DLG 1w
 """
 {
 	- a8_unlocked >= 1 ?
-	  the screen shows browser open to a search engine(p)the text in the search bar reads(p)"how to make rat foie gras"
+	  the screen shows a browser open to a search engine(p)the text in the search bar reads(p)"how to make rat foie gras"
 	- else ?
 	  (jump 638)
 }
@@ -9458,17 +9594,13 @@ NAME rat 1 dialog
 
 DLG 4h
 """
-you picked up a bucket full of unimaginable things
-
-{health = health - 2}
+you picked up a bucket full of unimaginable things{health = health - 2}(p)you lost 2 health(p)you have {say health} health points left
 """
 NAME bucket dialog
 
 DLG 4i
 """
-you found a syringe in the grime(p)'i hope it doesn't poke me'
-
-{health = health - 3}
+you found a syringe in the grime(p)'i hope it doesn't poke me'{health = health - 3}(p)you lost 3 health(p)you have {say health} health points left
 """
 NAME dust trl syringe dialog
 
@@ -9753,9 +9885,7 @@ NAME exit narration 25
 
 DLG 5z
 """
-you found human remains
-
-foundDeadParent
+you found human remains{foundDeadParent = 1}
 """
 NAME pile of trash skull dialog
 
@@ -9830,7 +9960,7 @@ VAR hasEmptyBottle1
 0
 
 VAR canLeaveFirstRoom
-1
+0
 
 VAR a13_chest1
 0
@@ -9928,7 +10058,7 @@ VAR a3_unlocked
 VAR hasGun
 0
 
-VAR zMain_smoker
+VAR gaveTurmeric
 0
 
 VAR z6_unlock
@@ -23440,16 +23570,7 @@ addDualDialogTag('jump', function (environment, parameters) {
 
 //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEnd of Dialog Jumpppppppppppppppppppppppppppppppppppppppppppppppppppp
 
-//adding music
 
-var myAudio = new Audio('noone.ogg'); 
-myAudio.addEventListener('ended', function() {
-    this.currentTime = 0;
-    this.play();
-}, false);
-myAudio.play();
-
-//end of adding music
 
 
 
@@ -23462,7 +23583,16 @@ myAudio.play();
 <body onload='startExportedGame()'>
 <!-- GAME CANVAS -->
 <canvas id='game'></canvas>
-</body>
+<audio id="noone.ogg" src="noone.ogg" autoplay loop></audio> 
+<script>
+function unmute() {
+    document.getElementById("noone.ogg").play();
+    document.removeEventListener('pointerup', unmute);
+    document.removeEventListener('keydown', unmute);
+}
+document.addEventListener('pointerup', unmute);
+document.addEventListener('keydown', unmute);
+</script></body>
 
 
 </html>

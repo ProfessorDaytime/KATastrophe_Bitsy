@@ -1,8 +1,20 @@
+k, so right now thursday night, i'm using game.html in the 17 for class folder on the desktop
+
+rat total: 16s
+
+DLG
 """
 
 """
+NAME
 
-{wvy}*searching*{wvy}
+LAST 600 lvl dialog > 665
+
+add food is (jump 644)
+subtract food is (jump 645)
+"you found 1 muni (jump 631)
+
+{wvy}*searching*{wvy}(p)you found nothing
 
 {muni = muni + 1}
 
@@ -13,3 +25,12 @@ Greeting text{choice
 	  answer to response two
 }
 
+{ =  + 1}
+{wvy}*searching*{wvy}(p){
+	-  < 2 ?
+	  you found a { =  + 1}
+	-  = 2 ?
+	  you found a { =  + 1}
+	- else ?
+	  you found nothing else of interest
+}

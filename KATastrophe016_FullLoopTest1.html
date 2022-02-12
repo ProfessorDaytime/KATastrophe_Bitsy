@@ -214,7 +214,7 @@ NAME a13
 ITM 2 13,14
 ITM a 11,8
 ITM l 11,9
-ITM 1l 10,9
+ITM m 10,9
 ITM q 8,13
 ITM r 9,13
 ITM s 8,12
@@ -224,7 +224,7 @@ ITM z 9,12
 ITM 1e 10,13
 ITM 1b 8,11
 ITM u 10,12
-ITM m 9,11
+ITM 1l 9,11
 ITM 1s 11,6
 ITM 2b 11,13
 EXT 15,11 2 10,8 FX fade_b DLG r
@@ -7722,11 +7722,12 @@ NAME a13 your phone dialog
 
 DLG 8
 """
-would you like to go to sleep?{choice
-	- yes
-	  'i just woke up'
-	- no
-	  'i'm pretty sure i just woke up'
+INSERT this'll have something about it's too early to go to bed
+Greeting text{choice
+	- Response one
+	  answer to response one
+	- Response two
+	  answer to response two
     }
 """
 NAME bed_choice dialog
@@ -7824,7 +7825,7 @@ NAME drunk_cannabisCheck
 DLG 14
 """
 {a3_counter_3 = a3_counter_3 + 1}
-{wvy}*searching*{wvy}(p){
+{wvy}*searching*{wvy}{
 	- a3_counter_3 < 2 ?
 	  you found a spatula
 	- a3_counter_3 < 3 ?
@@ -7838,7 +7839,7 @@ NAME a3 counter b 2 dialog
 DLG 15
 """
 {a3_counter_4 = a3_counter_4 + 1}
-{wvy}*searching*{wvy}(p){
+{wvy}*searching*{wvy}{
 	- a3_counter_4 < 2 ?
 	  you found an old scifi novel(p)on the cover is the image of a mostly blue and orange solar system in front of a pink and white checker board with the title, "Jewel of Idan" in large shiny block letters {a3_password = 1}
 	- a3_counter_4 < 3 ?
@@ -7864,15 +7865,9 @@ NAME a14 neighbor lady dialog
 
 DLG 17
 """
-{a14_counter_7 = a14_counter_7 + 1}
-{wvy}*searching*{wvy}(p){
-	- a14_counter_7 < 2 ?
-	  you found 1 muni on the counter{muni = muni + 1}(p)neighbor: "i'm watching you. put that back"
-	- a14_counter_7 = 2 ?
-	  you see a smear of what looks like sriracha on the counter
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog
+
+a14_counter_7
 """
 NAME sprite 1x dialog
 
@@ -7889,7 +7884,7 @@ NAME a14 cabinet 2 dialog
 DLG 20
 """
 {a8_counter_3 = a8_counter_3 + 1}
-{wvy}*searching*{wvy}(p){
+{wvy}*searching*{wvy}{
 	- a8_counter_3 < 2 ?
 	  you found a muni { muni = muni + 1}
 	- a8_counter_3 = 2 ?
@@ -7909,7 +7904,7 @@ NAME a8 counter m 1 dialog
 DLG 22
 """
 {a8_counter_1 = a8_counter_1 + 1}
-{wvy}*searching*{wvy}(p){
+{wvy}*searching*{wvy}{
 	- a8_counter_1 < 2 ?
 	  you found a { =  + 1}
 	- a8_counter_1 = 2 ?
@@ -8314,7 +8309,7 @@ choose your guess at the password{choice
 	  "password accepted"(p)welcome, user{a3_unlocked = 1}
 }
 """
-NAME choose name based on novel
+NAME
 
 DLG 46
 """
@@ -8356,13 +8351,11 @@ DLG 50
 NAME dust plain muni dialog
 
 DLG 51
-"""
-you found a password written on a small piece of paper{a8_password = 1}
-"""
+INSERT you found a password written on a small piece of paper
 NAME a8 dust blr find password dialog
 
 DLG 52
-you found a charger cord
+INSERT dialog about finding a charger cord
 NAME trash pile find charge cord dialog
 
 DLG 53
@@ -8373,7 +8366,7 @@ NAME a11 dust find toy car dialog
 
 DLG 54
 """
-you picked up an alcoholic beverage
+INSERT dialog about picking up an alcoholic beverage
 
 a5_showSequence
 """
@@ -8381,7 +8374,7 @@ NAME alcohol dialog
 
 DLG 55
 """
-you found a trading card
+INSERT dialog about finding a trading card
 
 ALSO add in a bit about the tv show
 
@@ -8391,80 +8384,18 @@ NAME dust find trading card 1 dialog
 
 DLG 56
 """
-{
-	- returnedCard >= 1 ?
-	  loser: "hey, bud, thanks again for(p)finding my card"
-	- else ?
-	  (jump 648)
-}
+INSERT dialog about having lost their muni card and they have no muni
+
+You can give them their card if you found it
+
+you can give them muni
+
+you can tell them "that's a bummer"
+
+a2_muniCardGuy
+foundMuniCard
 """
 NAME a2 guy lost muni card dialog
-
-DLG 648
-"""
-{
-	- gaveMuniCardGuyMuni >= 1 ?
-	  loser: "thank you so much for the muni(p)i'm full, but still can't find my muni card"(jump 649)
-	- else ?
-	  loser: "can you please help me?(p)i seem to have misplaced my muni card(p)i'm really hungry"(jump 650)
-}
-"""
-NAME check if gave guy muni 
-
-DLG 649
-"""
-{
-	- foundMuniCard >= 1 ?
-	  (jump 651)
-	- else ?
-	  "sorry, i still haven't found your muni card(p)maybe you should look for it yourself rather than beg"
-}
-"""
-NAME check if have card 1
-
-DLG 650
-"""
-{
-	- foundMuniCard >= 1 ?
-	  (jump 651)
-	- else ?
-	  "sorry, i haven't seen it"(p)loser: could i have a few munies for food?(jump 652)
-}
-"""
-NAME check if have card 2
-
-DLG 651
-"""
-give them the card you found?{choice
-	- yes
-	  loser: "oh, thank you, finder(p)i would have starved"
-	- no
-	  "i have no idea what you're talking about"
-}
-"""
-NAME give guy their card
-
-DLG 652
-"""
-{
-	- muni >= 6 ?
-	  (jump 653)
-	- else ?
-	  "i have no muni to give you, loser"
-}
-"""
-NAME a2 check for muni
-
-DLG 653
-"""
-give this loser food muni?{choice
-	- no
-	  "dude, go look for the muni card yourself"
-	- yes
-	  "i pity you, here"(p)you gave them 5 muni{muni = muni - 5}{gaveMuniCardGuyMuni = 1}(p)you now have {say muni} munies(p)loser: "thank you, but this can't get me much"
-}
-"""
-NAME give muni card guy muni
 
 DLG 57
 """
@@ -8474,35 +8405,19 @@ NAME z8 a11 key trash dialog
 
 DLG 58
 """
-you found an empty opiod bottle in a drawer(p)you left it there
+INSERT counter dialog
+
+z12_counter_1
 """
 NAME z12 counter 1 l dialog
 
 DLG 59
 """
-{z12_counter_2 = z12_counter_2 + 1}
-{wvy}*searching*{wvy}(p){
-	- z12_counter_2 < 2 ?
-	  you found nothing
-	- z12_counter_2 = 2 ?
-	  'oh, wait'(p)you found a can of dark red kidney beans in the bery back of the drawer(jump 644)
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog
+
+z12_counter_2
 """
 NAME z12 counter m 1 dialog
-
-DLG 644
-"""
-{food = food + 1}you have {say food} foods
-"""
-NAME add food dialog
-
-DLG 645
-"""
-{food = food - 1}you have {say food} foods
-"""
-NAME subtract food dialog
 
 DLG 60
 you enter the secondary Z hall
@@ -8556,26 +8471,15 @@ DLG 65
 NAME rat 3 bite dialog
 
 DLG 66
-"""
-you picked up an empty bottle {hasEmptyBottle1 = hasEmptyBottle1 + 1}
-"""
+INSERT add an empty bottle to inventory
 NAME empty bottle 2 dialog
 
 DLG 67
-"""
-you picked up an empty bottle {hasEmptyBottle1 = hasEmptyBottle1 + 1}
-
-a5_showSequence
-"""
+INSERT add an empty bottle to inv and add a bit of text from the show
 NAME empty bottle 3 dialog
 
 DLG 68
-META - Hey, so I'm planning to write out dialog from a fake tv show for each interaction in this room
-i had to postpone that part for now
-
 INSERT first bit of show sequence
-
-a5_showSequence
 NAME a5 dust tv sequence dialog
 
 DLG 69
@@ -8618,13 +8522,8 @@ NAME portable_game_console dialog
 
 DLG e
 """
-{a3_box_1 = a3_box_1 + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_box_1 < 2 ?
-	  (jump 631)
-	- else ?
-	  you found nothing else of interest
-}
+{wvy}*searching*{wvy}
+(jump 631)
 """
 NAME a3 box 1 dialog
 
@@ -8637,79 +8536,44 @@ NAME a3 box 2 dialog
 
 DLG g
 """
-{a3_box_3 = a3_box_3 + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_box_3 < 2 ?
-	  you found a can of sriracha flavored durian fruit(jump 644)
-	- a3_box_3 <= 4 ?
-	  you found a can of chickpeas(jump 644)
-	- else ?
-	  you found nothing else of interest
-}
+INSERT box dialog about a can of beans
+a3_box_3
 """
 NAME a3 box 3 dialog
 
 DLG h
 """
-{a3_box_4 =  + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_box_4 < 2 ?
-	  you found a roll of tape
-	- else ?
-	  you found nothing else of interest
-}
+INSERT box dialog about finding tape
+a3_box_4
 """
 NAME a3 box 4 dialog
 
 DLG i
 """
-{a3_box_5 = a3_box_5 + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_box_5 <= 5 ?
-	  (jump 631)
-	- else ?
-	  you found nothing else of interest
-}
+INSERT box dialog about finding 5 muni
+a3_box_5
 """
 NAME a3 box 5 dialog
 
 DLG j
 """
-{a3_box_6 =  + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_box_6 < 2 ?
-	  you found old jerky(jump 644)
-	- a3_box_6 = 2 ?
-	  the box is full of wires
-	- else ?
-	  still just a bunch of wires(p)'i don't need these
-}
+INSERT box dialog about finding old jerky
+
+a3_box_6
 """
 NAME a3 box 6 dialog
 
 DLG k
 """
-{a3_counter_1 =  + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_counter_1 < 2 ?
-	  it seems like the drawer is stuck on something(p)*jiggle*(p)*jiggle*
-	- a3_counter_1 = 2 ?
-	  you found the plastic knife(p)that must have been stuck in the drawer
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog about finding a knife  a3_counter_1
+
 """
 NAME a3 counter l
 
 DLG l
 """
-{a3_counter_2 = a3_counter_2 + 1}
-{wvy}*searching*{wvy}(p){
-	- a3_counter_2 < 2 ?
-	  you found a chili powder shaker {chili = chili + 1}
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog about finding a chili powder shaker
+a3_counter_2
 """
 NAME a3 counter 2
 
@@ -8952,159 +8816,97 @@ NAME z main cat3 dialog
 
 DLG 1o
 """
-the box is full of raw grains(p)'i'm not sure what kind of grains these are'
+INSERT box dialog
+
+a8_box_2
 """
 NAME a8 box 4 dialog
 
 DLG 1p
 """
-{a8_box_1 = a8_box_1 + 1}
-{wvy}*searching*{wvy}(p){
-	- a8_box_1 < 2 ?
-	  you found a book about angish cuisine
-	- a8_box_1 = 2 ?
-	  you found another book in angish(p)okay, you get the meta lore to this(jump 646)
-	- else ?
-	  you found nothing else of interest
-}
+INSERT box dialog
+
+a8_box_1
 """
 NAME a8 box 3 dialog
 
-DLG 646
-"""
-META- so this "universe" i've been developing this "universe" outside of this game(p)the country you're in is "Vespucca"(p)because Amerigo Vespucci(p)'what if it were named for his last name?'(p)so this room is a joke about the person(p)overfeeding their rat to make rat foie gras(p)France is named after a weapon the Franks used(p)"Francisca" it was a throwing axe thing(p)they also used a javelin called "Angon" i think(p)so i'm calling France "Angon"
-"""
-NAME
-
 DLG 1q
 """
-this box has one tub huge the size of the box(p)labeled "fat"
+INSERT box dialog
+
+a8_box_3
 """
 NAME a8 box 2 dialog
 
 DLG 1r
 """
-this box also has one big tub the size of the box(p)labeled "fat"(p)unless you came to this box first(p)in that case, imagine the other box(p)says "also" instead
+INSERT box dialog
+
+a8_box_4
 """
 NAME a8 box 1 dialog
 
 DLG 1s
 """
-this part of the counter is clean
+INSERT counter dialog
+
+a8_counter_9
 """
 NAME a8 counter r 2 dialog
 
 DLG 1t
 """
-{a8_counter_8 = a8_counter_8 + 1}
-{wvy}*searching*{wvy}(p){
-	- a8_counter_8 < 2 ?
-	  you found a salt pile
-	- else ?
-	  'ugh, another experience without enough piles of salt(p)i better not need one for each recipe
-}
+INSERT counter dialog
+
+a8_counter_8
 """
 NAME a8 counter m 4 dialog
 
 DLG 1u
 """
-there are a few grains of salt on the counter here(jump 647)
+INSERT counter dialog
+
+a8_counter_7
 """
 NAME a8 counter m 3 dialog
 
-DLG 647
-"""
-lick up all that salty goodness off the counter?{choice
-	- absolutely
-	  you lapped that shit up
-	- just lick a finger tip and dip that in the salt
-	  'i like salt, but(p)damn am I thirsty'
-}
-"""
-NAME lick salt option
-
 DLG 1v
 """
-you found nothing else of interest(p)just like plates and shit
+INSERT counter dialog
+
+a8_counter_6
 """
 NAME a8 counter 2 l dialog
 
 DLG 1w
 """
-{
-	- a8_unlocked >= 1 ?
-	  the screen shows browser open to a search engine(p)the text in the search bar reads(p)"how to make rat foie gras"
-	- else ?
-	  (jump 638)
-}
+INSERT monitor dialog if you picked up the paper with the password, you can log in and see something funny maybe it's open to a search engine with the search "how to know if a rat loves you"
+
+a8_password
+a8_unlocked
 """
 NAME a8 monitor dialog
 
-DLG 638
-"""
-{
-	- a8_tries > 0 ?
-	  (jump 639)
-	- else ?
-	  you are locked out of this computer
-}
-"""
-NAME a8 are tries left
-
-DLG 639
-"""
-{
-	- a8_password < 1 ?
-	  the computer is locked(p)there is a prompt for a password(jump 640)
-	- else ?
-	  the computer is locked(p)there is a prompt for a password(jump 642)
-}
-"""
-NAME a8 check for password
-
-DLG 640
-"""
-would you like to guess a password?(p)it says "{say a8_tries} tries remaining"{choice
-	- yes
-	  (jump 641)
-	- no
-	  'it's probably for the best'
-}
-"""
-NAME a8 option to guess without password
-
-DLG 641
-"""
-choose your guess at the password{choice
-	- Pas$word1234
-	  "incorrect password(p){a3_tries = a3_tries - 1}you have {say a3_tries} tries remaining"
-	- P@ssw0rd42069
-	  "incorrect password(p){a3_tries = a3_tries - 1}you have {say a3_tries} tries remaining"
-}
-"""
-NAME a8 try 2 wrong passwords
-
-DLG 642
-"""
-'i found this password on a piece of paper back there(p)might as well try it'(p)"password accepted(p)welcome, user"{a8_unlocked = 1}
-"""
-NAME a8 option to guess with password
-
 DLG 1x
 """
-there's a yellow stain on the counter here
+INSERT counter dialog
+
+a8_counter_4
 """
 NAME a8 counter m 3 dialog 1
 
 DLG 1y
 """
-the drawers are full of plastic containers
+INSERT counter dialog
+
+a8_counter_5
 """
 NAME a8 counter r 1 dialog
 
 DLG 1z
 """
-it is not the time for water from this sink(p)'oh, yeah, the light's not flashing'(p){rbw}META{rbw} - the flashing is only a flavor thing(p)YOU WON'T actually see it on the screen(p){rbw}srry{rbw}
+INSERT sink dialog
+
 """
 NAME a8 sink  dialog
 
@@ -9152,19 +8954,23 @@ NAME locked exit 6
 
 DLG 2g
 """
-there's a jar of ground chaga mushrooms on the counter(p)'i miss coffee, damn climate change'(p)neighbor:"you need to leave"
+INSERT counter dialog
+
+a14_counter_
 """
 NAME a14 counter l 2 dialog
 
 DLG 2h
 """
-there's a coffe ma-(p)er(p)chaga brewer on the counter(p)neighbor: "you need to leave"
+INSERT counter dialog
+a14_counter_2
 """
 NAME a14 counter 2 ml dialog
 
 DLG 2i
 """
-you found a bunch of dining ware in the drawer(p)neighbor: "you need to leave"
+INSERT counter dialog
+a14_counter_3
 """
 NAME a14 counter 2 mr dialog
 
@@ -9174,54 +8980,45 @@ NAME a14 sink dialog
 
 DLG 2k
 """
-{a14_counter_4 = a14_counter_4 + 1}
-{wvy}*searching*{wvy}(p){
-	- a14_counter_4 < 2 ?
-	  you found a turmeric shaker {turmeric = turmeric + 1}(p)neighbor: "hey, i saw that(p){shk}put that back"{shk}
-	- a14_counter_4 < 3 ?
-	  you put the turmeric back {turmeric = turmeric - 1}(p)neighbor: "there, now leave"
-	- a14_counter_4 < 4 ?
-	  you take the turmeric and some fenugreek shakers {turmeric = turmeric + 1}{fenugreek = fenugreek + 1}
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog
+
+a14_counter_4
 """
 NAME a14 counter 2 r dialog
 
 DLG 2l
 """
-neighbor: {shk}"get out of my apartment"{shk}(p)they swing at you(p)their fist makes contact with your ribs(p)'that kinda hurt'
+INSERT counter dialog
+a14_counter_8
 """
 NAME a14 counter m  dialog
 
 DLG 2m
 """
-neighbor: {shk}"aaaahhhrrg"{shk}
+INSERT counter dialog
+
+a14_counter_9
 """
 NAME a14 counter r 2 dialog
 
 DLG 2n
 """
-you found nothing else of interest(p)neighbor: "you need to {rbw}leave{rbw}"
+INSERT counter dialog
+
+a14_counter_5
 """
 NAME a14 counter t 1 dialog
 
 DLG 2o
 """
-{a14_counter_6 = a14_counter_6 + 1}
-{wvy}*searching*{wvy}(p){
-	- a14_counter_6 < 2 ?
-	  you found a bag of flour(p)'i uh guess i can eat that'(p)neighbor: "oh, so you're going to steal my flour now?(p)fuck you"(jump 644)
-	- a14_counter_6 = 2 ?
-	  you totally just spilled flour all over the place(p)neighbor: "if this couch wasn't so soft and(p)i wasn't so lazy(p)you'd be dead"
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog
+
+a14_counter_6
 """
 NAME a14 counter b 1 dialog
 
 DLG 2p
-there are dozens of copies of that one movie(p)you know, the one with the rat that cooks
+INSERT cabinet dialog
 NAME a8 tv stand l dialog
 
 DLG 2q
@@ -9229,27 +9026,15 @@ it's the back of a tv(p)you find an HDMI cable
 NAME a8 tv stand m dialog
 
 DLG 2r
-the tv is off(p)'it's kinda crazy a lot of my neighbors(p)have the same model of tv
+INSERT tv dialog
 NAME a8 back of tv dialog
 
 DLG 2s
-{a8_chest = a8_chest + 1}
-{wvy}*searching*{wvy}(p){
-	- a8_chest < 10 ?
-	  you stole a pair of pants from the chest
-	- else ?
-	  the chest is empty(p)you took all the pants
-}
+INSERT chest dialog
 NAME a8 chest 1 l dialog
 
 DLG 2t
-{a8_chest = a8_chest + 1}
-{wvy}*searching*{wvy}(p){
-	- a8_chest < 10 ?
-	  you stole a pair of pants from the chest
-	- else ?
-	  the chest is empty(p)you took all the pants
-}
+INSERT chest dialog
 NAME a8 chest r 1 dialog
 
 DLG 2u
@@ -9262,7 +9047,7 @@ NAME cassette dialog
 
 DLG 2v
 """
-neighbor: "hey, buddy, beat it"
+INSERT dialog for person on couch with partner
 
 a5_showSequence
 """
@@ -9270,7 +9055,7 @@ NAME a5 people l dialog
 
 DLG 2w
 """
-neighbor: "could you please leave our apartment?(p)my partner and i are trying to watch this show"
+INSERT dialog for other person on couch with partner
 
 a5_showSequence
 """
@@ -9294,7 +9079,7 @@ NAME a5 counter m 1 dialog
 
 DLG 2z
 """
-neighbor: "please don't touch that"
+INSERT sink dialog neighbor: don't touch that
 
 a5_showSequence
 """
@@ -9357,11 +9142,11 @@ kiosk: welcome to talulah's cafe @ A2
 NAME sprite 3u dialog
 
 DLG 3p
-person: "damn, this is good(p)have you tried this?"
+INSERT dialog about how good the food is
 NAME a2 person 2 dialog
 
 DLG 3q
-person: "please don't bother us"
+INSERT dialog "please don't bother us"
 NAME a2 person 1 dialog
 
 DLG 3r
@@ -9402,27 +9187,25 @@ NAME alien dialog
 
 DLG 3z
 """
-you almost bump into the robot(p)'whoa, i should watch out for the jets'
+INSERT robot dialog
+
+'whoa, i should watch out for the jets'
 """
 NAME sprite 4h dialog
 
 DLG 4a
 """
-{a11_counter_2 = a11_counter_2 + 1}
-{wvy}*searching*{wvy}(p){
-	- a11_counter_2 < 2 ?
-	  you found a bandage {bandages = bandages + 1}
-	- a11_counter_2 = 2 ?
-	  you found a bandage {bandages = bandages + 1}
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog - they probably don't have any food
+
+a11_counter_2
 """
 NAME a11 counter r 1 dialog
 
 DLG 4b
 """
-the smell of sardine oil coming from this drawer(p)is the only thing overpowering(p)the cat piss smell in the room
+INSERT counter dialog - no food
+
+a11_counter_1
 """
 NAME a11 counter l 1  dialog
 
@@ -9473,11 +9256,11 @@ you found a syringe in the grime(p)'i hope it doesn't poke me'
 NAME dust trl syringe dialog
 
 DLG 4j
-i don't believe this dialog is used(p)if it is, email me subject "4j" to(p)professordaytime@gmail.com
+INSERT dialog this is where you find the key to the kids' apartment
 NAME dust 5 key in the grime dialog
 
 DLG 4k
-you found empty wrappers from low quality pastries
+INSERT dialog about finding low quality pastry wrappers
 NAME trash pile 1 wrappers dialog
 
 DLG 4l
@@ -9547,26 +9330,22 @@ neighbor: "hey, what are you doing?(p){shk}get out of here{shk}"
 NAME a14 dust enter 1 dialog
 
 DLG 4y
-"""
-you picked up an empty bottle {hasEmptyBottle1 = hasEmptyBottle1 + 1}
-"""
+INSERT find empty bottle dialog
 NAME a14 dust br corner empty bottle dialog
 
 DLG 4z
 """
-'is that the rat?'(p)'how did my neighbor not check their own apartment?'{a8_sawBigRat = 1}
+'is that the rat?'(p)'how did my neighbor not check their own apartment?'
+
+a8_sawBigRat
 """
 NAME a8 look at rat dust dialog
 
 DLG 5a
 """
-{z12_counter_3 = z12_counter_3 + 1}
-{wvy}*searching*{wvy}(p){
-	- z12_counter_3 < 2 ?
-	  you found a bandage{bandages = bandages + 1}
-	- else ?
-	  you found nothing
-}
+INSERT counter dialog
+
+z12_counter_3
 """
 NAME z12 counter m 2 dialog
 
@@ -9596,87 +9375,55 @@ NAME noone good work 2
 
 DLG 5c
 """
-you found nothing else of interest
+INSERT counter dialog
+
+z12_counter_4
 """
 NAME z12 counter m 3 dialog
 
 DLG 5d
 """
-{z12_counter_5 = z12_counter_5 + 1}
-{wvy}*searching*{wvy}(p){
-	- z12_counter_5 < 2 ?
-	  you found a bag of tortillas(jump 644)
-	- z12_counter_5 = 2 ?
-	  you found a bag of dried poblano peppers(jump 644)
-	- else ?
-	  you found nothing else of interest
-}
+INSERT counter dialog
+
+z12_counter_5
 """
 NAME z12 counter 1 r dialog
 
 DLG 5e
 """
-the cabinet is empty(p)'that dust print looks like a console used to be there'
+INSERT cabinet dialog
+
+z12_cabinet_1
 """
 NAME z12 tv stand l dialog
 
 DLG 5f
-"""
-it's the back of a tv(p)'wait, what's that shoved into one of the ports ?'(p){wvy}...searching...{wvy}(p)you found a melted chocolate and peanut butter candy
-"""
+INSERT it's the back of a tv(p)'wait, what's that shoved into one of the ports ?'(p){wvy}...searching...{wvy}(p)you found a melted chocolate and peanut butter candy.
 NAME z12 tv stand m dialog
 
 DLG 5g
-'hmm, i wonder how long they've been out of town(p)this place doesn't look too dusty'
+INSERT dialog about the apartment not being too dirty
 NAME z12 dust enter room dialog
 
 DLG 5h
-the tv is off
+INSERT turned off tv description
 NAME z12 tv dialog
 
 DLG 5i
 """
-the box is full of packing peanuts
+INSERT dialog about being full of packing peanuts
+
+z12_box
 """
 NAME z12 box dialog
 
 DLG 5j
-"""
-{shuffle
-	- teen: "i'm so hungry"
-	- teen: "this is some good shit"
-	- teen: "can't wait to get some tendies at telulah's cafe"
-	- teen: "bro, you're bogarting it"
-	- teen: *laughing*
-	- teen: "i couldn't find my pants this morning"(p)other teen: "the camo ones?"
-}
-"""
+INSERT dialog about the restaurant at A2
 NAME a main guy on floor 1 dialog
 
 DLG 5k
-"""
-{shuffle
-    - teen: *pffffft*(p)*cough*(p)*cough*(p)*cough*(p)*clears throat sound*
-	- teen: "bud, you're totally right(p)no one will find us back here"
-	- teen: "kebabs, here i come"
-	- (jump 643)
-	- teen: "my mouth feels like a shirt"
-	- teen: "i can't even count how many times i've failed at math"
-	- teen: "fuck dude, telulah's is so expensive"
-}
-"""
+INSERT dialog about eating at A2 after they smoke a bit
 NAME a main guy sitting smoking dialog
-
-DLG 643
-"""
-teen: "hey, loser, want a hit of this shit?"{choice
-	- yes
-	  you take 2 long draws and hand it back to the teen
-	- no
-	  teen: "you better not narc, asshole"
-}
-"""
-NAME smoke with the teens prompt
 
 DLG 5l
 """
@@ -9690,12 +9437,13 @@ it's a plant(p){
 NAME a main plant base dialog
 
 DLG 5m
-you found a pile of chicken bones
+INSERT dialog about finding chicken bones 
 NAME a main chicken bone dust dialog
 
 DLG 5n
 """
-you found a bottle cap{bottleCaps = bottleCaps + 1}(p)you have {say bottleCaps} bottle caps
+INSERT dialog about finding bottle cap
+
 """
 NAME a main dust bottle cap dialog
 
@@ -9706,9 +9454,7 @@ DLG 5o
 NAME dust 4 muni dialog
 
 DLG 5p
-"""
-you found a pile of rat bones{rats = rats + 1}(p)you have {say rats} rats in your bag now(p)'i think these bones may have been here longer(p)than that rat has been missing tho'(p)*shrug*
-"""
+INSERT dialog about finding rat bones
 NAME trash pile with rat bones dialog
 
 DLG 5q
@@ -9721,12 +9467,14 @@ NAME locked exit 24
 
 DLG 5s
 """
-you found a municard in the grime{foundMuniCard = 1}
+INSERT dialog about finding debit card in the trash pile
+
+foundMuniCard
 """
 NAME trash pile with debit card dialog
 
 DLG 5t
-it is not time for this sink to dispense water
+INSERT sink dialog
 NAME a11 sink dialog
 
 DLG 5u
@@ -9734,7 +9482,7 @@ neighbor: "{shk}help{shk}"
 NAME item 2p dialog
 
 DLG 5v
-'this is my miscellaneous drawer(p)i keep rubber bands and bag clips in there'
+INSERT counter dialog last counter a13
 NAME a13 last counter dialog
 
 DLG 5w
@@ -9760,51 +9508,55 @@ foundDeadParent
 NAME pile of trash skull dialog
 
 DLG 6a
+"""
+INSERT counter dialog
 
+a2_counter_1
+"""
 NAME a2 counter l 2 dialog
 
 DLG 6b
-
+a2_counter_2
 NAME a2 counter m 5 dialog
 
 DLG 6c
-
+a2_counter_3
 NAME a2 counter m 6 dialog
 
 DLG 6d
-
+a2_counter_4
 NAME a2 counter m 7 dialog
 
 DLG 6e
-
+a2_counter_5
 NAME a2 counter r 2 dialog
 
 DLG 6f
-
+a2_counter_6
 NAME a2 counter l 1 dialog
 
 DLG 6g
-
+a2_counter_7
 NAME a2 counter m 1 dialog
 
 DLG 6h
-
+a2_counter_8
 NAME a2 counter m 2 dialog
 
 DLG 6i
-
+a2_counter_9
 NAME a2 counter m 3 dialog
 
 DLG 6j
-
+a2_counter_10
 NAME a2 counter m 4 dialog
 
 DLG 6k
-
+a2_counter_11
 NAME a2 counter r 1 dialog
 
 DLG 6l
-'i better be careful around this fryer'
+a2_fryer
 NAME a2 counter fryer 1 dialog
 
 DLG 6m
@@ -9813,7 +9565,9 @@ NAME a2 counter oven stove dialog
 
 DLG 6n
 """
-there's a pile of old VHS tapes in the cabinet
+INSERT cabinet dialog
+
+z12_cabinet_2
 """
 NAME z12 tv stand r dialog
 
@@ -9830,7 +9584,7 @@ VAR hasEmptyBottle1
 0
 
 VAR canLeaveFirstRoom
-1
+0
 
 VAR a13_chest1
 0
@@ -9869,6 +9623,9 @@ VAR aSec_kid
 0
 
 VAR aSec_drunk
+0
+
+VAR aSec_ratPerson
 0
 
 VAR rats
@@ -10027,28 +9784,13 @@ VAR a8_password
 VAR a8_unlocked
 0
 
-VAR a8_tries
-5
-
-VAR aSec_ratPerson
-0
-
 VAR a8_rat
 0
 
 VAR shotRat
 0
 
-VAR shotRatConvo
-0
-
-VAR returnedRats
-0
-
 VAR gotBit
-0
-
-VAR gotBitConvo
 0
 
 VAR ratBites
@@ -10168,12 +9910,6 @@ VAR foundDeadParent
 VAR foundMuniCard
 0
 
-VAR gaveMuniCardGuyMuni
-0
-
-VAR returnedCard
-0
-
 VAR a11_key
 0
 
@@ -10202,12 +9938,9 @@ VAR z12_cabinet_2
 0
 
 VAR food
-1
+5
 
 VAR hasPhone
-0
-
-VAR bottleCaps
 0
 
 
@@ -23439,17 +23172,6 @@ addDualDialogTag('jump', function (environment, parameters) {
 
 
 //EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEnd of Dialog Jumpppppppppppppppppppppppppppppppppppppppppppppppppppp
-
-//adding music
-
-var myAudio = new Audio('noone.ogg'); 
-myAudio.addEventListener('ended', function() {
-    this.currentTime = 0;
-    this.play();
-}, false);
-myAudio.play();
-
-//end of adding music
 
 
 
